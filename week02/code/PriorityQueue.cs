@@ -1,59 +1,70 @@
-﻿public class PriorityQueue
+﻿/// <summary>
+/// A basic implementation of a Priority Queue.
+/// </summary>
+public class PriorityQueue
 {
-    private List<PriorityItem> _queue = new();
-
-    /// <summary>
-    /// Add a new value to the queue with an associated priority.  The
-    /// node is always added to the back of the queue regardless of 
-    /// the priority.
-    /// </summary>
-    /// <param name="value">The value</param>
-    /// <param name="priority">The priority</param>
-    public void Enqueue(string value, int priority)
+    private class Item
     {
-        var newNode = new PriorityItem(value, priority);
-        _queue.Add(newNode);
+        public string Value { get; set; }
+        public int Priority { get; set; }
+
+        public Item(string value, int priority)
+        {
+            Value = value;
+            Priority = priority;
+        }
+
+        public override string ToString()
+        {
+            return $"({Value}, {Priority})";
+        }
     }
 
+    private readonly List<Item> _queue = new();
+
+    public int Length => _queue.Count;
+
+    /// <summary>
+    /// Add an item to the queue with a specific priority.
+    /// </summary>
+    public void Enqueue(string value, int priority)
+    {
+        var item = new Item(value, priority);
+        _queue.Add(item);
+    }
+
+    /// <summary>
+    /// Remove the item with the highest priority (larger number = higher priority).
+    /// If two items have the same priority, the one added first is removed.
+    /// </summary>
     public string Dequeue()
     {
-        if (_queue.Count == 0) // Verify the queue is not empty
-        {
+        if (_queue.Count == 0)
             throw new InvalidOperationException("The queue is empty.");
-        }
 
-        // Find the index of the item with the highest priority to remove
-        var highPriorityIndex = 0;
-        for (int index = 1; index < _queue.Count - 1; index++)
+        int highPriorityIndex = 0;
+
+        // Only update index if a strictly higher priority is found
+        for (int index = 1; index < _queue.Count; index++)
         {
-            if (_queue[index].Priority >= _queue[highPriorityIndex].Priority)
+            if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
+            {
                 highPriorityIndex = index;
+            }
         }
 
-        // Remove and return the item with the highest priority
-        var value = _queue[highPriorityIndex].Value;
+        string value = _queue[highPriorityIndex].Value;
+        _queue.RemoveAt(highPriorityIndex);
         return value;
+    }
+
+    public bool IsEmpty()
+    {
+        return Length == 0;
     }
 
     public override string ToString()
     {
         return $"[{string.Join(", ", _queue)}]";
-    }
-}
-
-internal class PriorityItem
-{
-    internal string Value { get; set; }
-    internal int Priority { get; set; }
-
-    internal PriorityItem(string value, int priority)
-    {
-        Value = value;
-        Priority = priority;
-    }
-
-    public override string ToString()
-    {
-        return $"{Value} (Pri:{Priority})";
     }
 }
