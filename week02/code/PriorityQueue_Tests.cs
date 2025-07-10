@@ -9,8 +9,7 @@ public class PriorityQueueTests
     // Scenario: Insert 3 elements with different priorities.
     // Enqueue("A", 1), Enqueue("B", 3), Enqueue("C", 2)
     // Expected Result: Dequeue() returns B, then C, then A
-    // Requirement(s) tested: 
-    // - Higher priority items are dequeued first.
+    // Defect(s) Found: Original implementation did not correctly sort by priority.
     public void TestPriorityQueue_1()
     {
         var pq = new PriorityQueue();
@@ -27,8 +26,7 @@ public class PriorityQueueTests
     // Scenario: Insert 3 elements with the same priority.
     // Enqueue("X", 5), Enqueue("Y", 5), Enqueue("Z", 5)
     // Expected Result: Dequeue() returns X, then Y, then Z (FIFO order)
-    // Requirement(s) tested:
-    // - Among items with same priority, dequeue follows FIFO order.
+    // Defect(s) Found: Original implementation did not preserve FIFO order for same priority.
     public void TestPriorityQueue_2()
     {
         var pq = new PriorityQueue();
@@ -41,11 +39,12 @@ public class PriorityQueueTests
         Assert.AreEqual("Z", pq.Dequeue());
     }
 
+    // Add more test cases as needed below.
+
     [TestMethod]
     // Scenario: Call Dequeue() on an empty queue.
     // Expected Result: InvalidOperationException should be thrown with message "The queue is empty."
-    // Requirement(s) tested:
-    // - Dequeue from empty queue throws appropriate exception.
+    // Defect(s) Found: Original implementation did not check for empty queue.
     public void TestPriorityQueue_EmptyQueue()
     {
         var pq = new PriorityQueue();
@@ -60,4 +59,22 @@ public class PriorityQueueTests
             Assert.AreEqual("The queue is empty.", e.Message);
         }
     }
+
+    [TestMethod]
+    // Scenario: Check if queue is empty using IsEmpty().
+    // Enqueue one element and dequeue it. Then check IsEmpty().
+    // Expected Result: IsEmpty() should return true after all elements are removed.
+    // Defect(s) Found: None
+    public void TestPriorityQueue_IsEmptyCheck()
+    {
+        var pq = new PriorityQueue();
+        Assert.IsTrue(pq.IsEmpty());
+
+        pq.Enqueue("Only", 1);
+        Assert.IsFalse(pq.IsEmpty());
+
+        pq.Dequeue();
+        Assert.IsTrue(pq.IsEmpty());
+    }
 }
+
