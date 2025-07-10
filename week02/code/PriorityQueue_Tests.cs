@@ -9,7 +9,8 @@ public class PriorityQueueTests
     // Scenario: Insert 3 elements with different priorities.
     // Enqueue("A", 1), Enqueue("B", 3), Enqueue("C", 2)
     // Expected Result: Dequeue() returns B, then C, then A
-    // Defect(s) Found: (Describe here after running the test)
+    // Requirement(s) tested: 
+    // - Higher priority items are dequeued first.
     public void TestPriorityQueue_1()
     {
         var pq = new PriorityQueue();
@@ -26,7 +27,8 @@ public class PriorityQueueTests
     // Scenario: Insert 3 elements with the same priority.
     // Enqueue("X", 5), Enqueue("Y", 5), Enqueue("Z", 5)
     // Expected Result: Dequeue() returns X, then Y, then Z (FIFO order)
-    // Defect(s) Found: (Describe here after running the test)
+    // Requirement(s) tested:
+    // - Among items with same priority, dequeue follows FIFO order.
     public void TestPriorityQueue_2()
     {
         var pq = new PriorityQueue();
@@ -39,11 +41,11 @@ public class PriorityQueueTests
         Assert.AreEqual("Z", pq.Dequeue());
     }
 
-    // Add more test cases as needed below.
     [TestMethod]
     // Scenario: Call Dequeue() on an empty queue.
     // Expected Result: InvalidOperationException should be thrown with message "The queue is empty."
-    // Defect(s) Found: (Describe here after running the test)
+    // Requirement(s) tested:
+    // - Dequeue from empty queue throws appropriate exception.
     public void TestPriorityQueue_EmptyQueue()
     {
         var pq = new PriorityQueue();
@@ -58,5 +60,4 @@ public class PriorityQueueTests
             Assert.AreEqual("The queue is empty.", e.Message);
         }
     }
-
 }
