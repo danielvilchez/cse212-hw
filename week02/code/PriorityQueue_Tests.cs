@@ -17,9 +17,9 @@ public class PriorityQueueTests
         pq.Enqueue("B", 3);
         pq.Enqueue("C", 2);
 
-        Assert.AreEqual("B", pq.Dequeue());
-        Assert.AreEqual("C", pq.Dequeue());
-        Assert.AreEqual("A", pq.Dequeue());
+        Assert.AreEqual("B", pq.Dequeue(), "Expected 'B' because it has the highest priority (3).");
+        Assert.AreEqual("C", pq.Dequeue(), "Expected 'C' because it has the second highest priority (2).");
+        Assert.AreEqual("A", pq.Dequeue(), "Expected 'A' because it has the lowest priority (1).");
     }
 
     [TestMethod]
@@ -34,9 +34,9 @@ public class PriorityQueueTests
         pq.Enqueue("Y", 5);
         pq.Enqueue("Z", 5);
 
-        Assert.AreEqual("X", pq.Dequeue());
-        Assert.AreEqual("Y", pq.Dequeue());
-        Assert.AreEqual("Z", pq.Dequeue());
+        Assert.AreEqual("X", pq.Dequeue(), "Expected 'X' because it was inserted first (FIFO for equal priority).");
+        Assert.AreEqual("Y", pq.Dequeue(), "Expected 'Y' because it was inserted second (FIFO for equal priority).");
+        Assert.AreEqual("Z", pq.Dequeue(), "Expected 'Z' because it was inserted third (FIFO for equal priority).");
     }
 
     // Add more test cases as needed below.
@@ -52,11 +52,11 @@ public class PriorityQueueTests
         try
         {
             pq.Dequeue();
-            Assert.Fail("Exception should have been thrown.");
+            Assert.Fail("Exception should have been thrown when calling Dequeue() on an empty queue.");
         }
         catch (InvalidOperationException e)
         {
-            Assert.AreEqual("The queue is empty.", e.Message);
+            Assert.AreEqual("The queue is empty.", e.Message, "Expected message 'The queue is empty.' when Dequeue is called on an empty queue.");
         }
     }
 
@@ -68,13 +68,12 @@ public class PriorityQueueTests
     public void TestPriorityQueue_IsEmptyCheck()
     {
         var pq = new PriorityQueue();
-        Assert.IsTrue(pq.IsEmpty());
+        Assert.IsTrue(pq.IsEmpty(), "Expected IsEmpty() to return true on a new empty queue.");
 
         pq.Enqueue("Only", 1);
-        Assert.IsFalse(pq.IsEmpty());
+        Assert.IsFalse(pq.IsEmpty(), "Expected IsEmpty() to return false after adding one item.");
 
         pq.Dequeue();
-        Assert.IsTrue(pq.IsEmpty());
+        Assert.IsTrue(pq.IsEmpty(), "Expected IsEmpty() to return true after removing the only item.");
     }
 }
-
