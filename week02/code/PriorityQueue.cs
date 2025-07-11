@@ -7,7 +7,9 @@ public class PriorityQueue
     {
         public string Value { get; set; }
         public int Priority { get; set; }
-        public int Order { get; set; } // Keeps track of insertion order
+
+        // Keeps track of insertion order
+        public int Order { get; set; }  // ✅ Requirement #3: Needed for FIFO with same priority
 
         public Item(string value, int priority, int order)
         {
@@ -23,7 +25,9 @@ public class PriorityQueue
     }
 
     private readonly List<Item> _queue = new();
-    private int _orderCounter = 0; // Counter to keep insertion order
+
+    // Counter to keep insertion order
+    private int _orderCounter = 0; // ✅ Supports Requirement #1 and #3
 
     public int Length => _queue.Count;
 
@@ -34,6 +38,7 @@ public class PriorityQueue
     /// <param name="priority">The priority of the value</param>
     public void Enqueue(string value, int priority)
     {
+        // ✅ Requirement #1: Add to the back and track insertion order
         var item = new Item(value, priority, _orderCounter++);
         _queue.Add(item);
     }
@@ -44,6 +49,7 @@ public class PriorityQueue
     /// <returns>The string value</returns>
     public string Dequeue()
     {
+        // ✅ Requirement #4: Throw error if queue is empty
         if (_queue.Count == 0)
             throw new InvalidOperationException("The queue is empty.");
 
@@ -51,14 +57,15 @@ public class PriorityQueue
 
         for (int index = 1; index < _queue.Count; index++)
         {
+            // ✅ Requirement #2: Find item with highest priority
             if (_queue[index].Priority > _queue[highPriorityIndex].Priority)
             {
                 highPriorityIndex = index;
             }
+            // ✅ Requirement #3: If tie, select item that was enqueued earlier (FIFO)
             else if (_queue[index].Priority == _queue[highPriorityIndex].Priority &&
                      _queue[index].Order < _queue[highPriorityIndex].Order)
             {
-                // Tie in priority: choose the one inserted earlier
                 highPriorityIndex = index;
             }
         }
@@ -82,3 +89,4 @@ public class PriorityQueue
         return $"[{string.Join(", ", _queue)}]";
     }
 }
+
