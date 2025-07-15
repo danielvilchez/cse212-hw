@@ -1,6 +1,6 @@
 ﻿public class DuplicateCounter
 {
-    //Count how many duplicates are in a collection of data.
+    // Count how many duplicates are in a collection of data using a set.
 
     public static void Run()
     {
@@ -19,12 +19,29 @@
         ];
 
         Console.WriteLine($"Number of items in the collection: {data.Length}");
-        Console.WriteLine($"Number of duplicates : {CountDuplicates(data)}");
+        Console.WriteLine($"Number of duplicates: {CountDuplicates(data)}");
     }
 
+    /// <summary>
+    /// Counts how many duplicate values exist in the array using a set.
+    /// </summary>
     private static int CountDuplicates(int[] data)
     {
-        // Add code here.
-        return 0;
+        var seen = new HashSet<int>();
+        int duplicateCount = 0;
+
+        foreach (var num in data)
+        {
+            if (seen.Contains(num))
+            {
+                duplicateCount++;
+            }
+            else
+            {
+                seen.Add(num);
+            }
+        }
+
+        return duplicateCount;
     }
 }
